@@ -2,10 +2,10 @@ import os
 import sys
 import argparse
 import yaml
-import urlparse
 import urllib
-import StringIO
-import cStringIO
+#import StringIO
+from io import StringIO
+#import cStringIO
 import numpy as np
 from PIL import Image
 import tensorflow as tf
@@ -13,6 +13,10 @@ import tensorflow as tf
 from hed.models.vgg16 import Vgg16
 from hed.utils.io import IO
 
+try:
+    from urllib.parse import urlparse
+except ImportError:
+     from urlparse import urlparse
 
 class HEDTester():
 
@@ -96,7 +100,7 @@ class HEDTester():
             url_response = urllib.urlopen(test_image)
 
             if url_response.code == 404:
-                print self.io.print_error('[Testing] URL error code : {1} for {0}'.format(test_image, url_response.code))
+                print(self.io.print_error('[Testing] URL error code : {1} for {0}'.format(test_image, url_response.code)))
                 return None
 
             try:
@@ -106,7 +110,7 @@ class HEDTester():
 
             except Exception as err:
 
-                print self.io.print_error('[Testing] Error with URL {0} {1}'.format(test_image, err))
+                print(self.io.print_error('[Testing] Error with URL {0} {1}'.format(test_image, err)))
                 return None
 
         # read from disk
@@ -123,7 +127,7 @@ class HEDTester():
 
             except Exception as err:
 
-                print self.io.print_error('[Testing] Error with image file {0} {1}'.format(test_image, err))
+                print(self.io.print_error('[Testing] Error with image file {0} {1}'.format(test_image, err)))
                 return None
 
         return image
